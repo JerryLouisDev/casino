@@ -28,27 +28,45 @@ function addChips(e){
 //Print the player's bet amount to the DOM.
 var betAmount = document.querySelector('h2');
 
-//Player clicks 'BET' button and the wheel spins and generates a result. 
+//Player clicks 'BET' button and the wheel spins and generates a result.
 
 document.querySelector('#submitBet').addEventListener('click', spinWheel);
 
-
   function spinWheel() {
+    const casinoWon = "casino won!"
+    const playerWon = "player won!"
+
+    console.log("works?");
+    fetch('profile', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        'casinoWon': casinoWon,
+        'playerWon': playerWon
+
+      })
+    })
+    .then(response => {
+      if (response.ok) return response.json()
+        // Add some stylying to notify the client that item has been selected
+        // window.location.reload()
+    })
+    
     betAmount.innerText
 
     console.log(betAmount.innerText);
 
-    fetch(`/api?betAmount=${bet}`)
-      //the ? is the parimeter for the bet being place
-      .then(response => response.json())
-      .then(data =>{
-
-
-        //this is the data for the winner and results will be returned with console.log below
-        console.log(data.winner);
-        console.log(data.spinResults);
-
-      })
+    // fetch(`/api?betAmount=${bet}`)
+    //   //the ? is the parimeter for the bet being place
+    //   .then(response => response.json())
+    //   .then(data =>{
+    //
+    //
+    //     //this is the data for the winner and results will be returned with console.log below
+    //     console.log(data.winner);
+    //     console.log(data.spinResults);
+    //
+    //   })
 
       winnerComparison(playerChoice)
     }
@@ -65,7 +83,7 @@ var num = document.getElementsByClassName("num");
 
 //Record the player's choice AKA the square they clicked on.
 
-let playerChoice 
+let playerChoice
 
   function getPlayerChoice(e){
 
@@ -76,30 +94,30 @@ let playerChoice
     document.querySelector('.h2PlayerChoice').innerText = `You bet on ${playerChoice}`
     console.log(playerChoice)
 
-    
-}
-//This is an object for the roulette game. 
 
-  let rouletteGame = {
-    player:{
-     betColor: "betColor", //Need an option for the player to select the color they are betting their money on will update with client side team this will correspond to the data-values on the index.ejs file
-     betNumber: "betNumber",
-     betAmount: "betAmount"//Storing the amount of money the player is betting
-    },
-  
-    casino:{
-      total: 0, //net profits
-      losses: "losses",
-      wins: "wins",
-      amountLost: 0,
-      amountWon: 0
-    }
-  }
+}
+//This is an object for the roulette game.
+
+  // let rouletteGame = {
+  //   player:{
+  //    betColor: "betColor", //Need an option for the player to select the color they are betting their money on will update with client side team this will correspond to the data-values on the index.ejs file
+  //    betNumber: "betNumber",
+  //    betAmount: "betAmount"//Storing the amount of money the player is betting
+  //   },
+  //
+  //   casino:{
+  //     total: 0, //net profits
+  //     losses: "losses",
+  //     wins: "wins",
+  //     amountLost: 0,
+  //     amountWon: 0
+  //   }
+  // }
 //object casino and player info
-  
-  
+
+
 //this function picks randomly between 2 options red or black can expand on this later
-  
+
   // function randomColor(){
   //   let random = Math.floor(Math.random())
   //   if(random <= .5){
@@ -115,7 +133,7 @@ let playerChoice
     let randomColor = Math.floor(Math.random())
     let computerColor
     let computerNumber = Math.floor(Math.random() * 37)
-    
+
       if(randomColor <= .5){
         computerColor = "red"
       }else{
@@ -127,13 +145,13 @@ let playerChoice
 
   }
 
-//This function checks who has won.   
-  
+//This function checks who has won.
+
   function winnerComparison(playerChoice){
     computerChoice = randomComputerChoice()
 
     printComputerChoice(computerChoice)
-  
+
     if(playerChoice === computerChoice){
       //let playerBank = bet * 10  -->pseudo code to add winnings to player's bank that they'll be able to "witdraw"
       //total = total - playerBank -->pseudo that subracts the winnings from the casino total
@@ -141,19 +159,20 @@ let playerChoice
       let result = "player wins"
       let winner = "player"
       printResults(result)
-      updatePlayerTotal(winner)  
+      updatePlayerTotal(winner)
 
     }else{
       console.log("casino wins");//don't know what will happen when wins occur just yet
       let result = "casino wins"
       let winner = "casino"
       printResults(result)
-      updatePlayerTotal(winner)  
+      updatePlayerTotal(winner)
     }
 
-     
+
 
   }
+
 
   function updatePlayerTotal(winner){
     let playerTotal = Number(document.querySelector('.h3PlayerTotal').innerText)
@@ -168,15 +187,38 @@ let playerChoice
     }
   }
 
-  //Prints computer choice. 
+
+  //Prints computer choice.
 
   function printComputerChoice(computerChoice) {
     document.querySelector('.h2ComputerChoice').innerText = `Roulette ball stopped on ${computerChoice}.`
   }
 
-   //Prints the result of the spin.  
+   //Prints the result of the spin.
 
   function printResults(result) {
     document.querySelector('.h2Results').innerText = result
   }
 
+
+//   function profitCheck(){
+//
+//     const casinoWon = "casino won!"
+//     const playerWon = "player won!"
+//
+//     console.log("works?");
+//     fetch('profile', {
+//       method: 'post',
+//       headers: {'Content-Type': 'application/json'},
+//       body: JSON.stringify({
+//         'casinoWon': casinoWon,
+//         'playerWon': playerWon
+//
+//       })
+//     })
+//     .then(response => {
+//       if (response.ok) return response.json()
+//         // Add some stylying to notify the client that item has been selected
+//         // window.location.reload()
+//     })
+// }
