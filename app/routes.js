@@ -28,16 +28,22 @@ module.exports = function(app, passport, db) {
 
     app.post('/profile', (req, res) => {
       console.log(req.body);
-      db.collection('profits').save({playerWon: req.body.playerWon, casinoWon: req.body.casinoWon}, (err, result) => {
+      db.collection('profits').save(
+        {winner: req.body.winner, 
+        loser: req.body.loser, 
+        total: req.body.total, 
+        betAmount: req.body.betAmount}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/')
       })
     })
 
-    app.put('/messages', (req, res) => { // add to our thumbs up
-      db.collection('messages')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+    var ObjectId = require('mongodb').ObjectId; 
+
+    app.put('/profile', (req, res) => { 
+      db.collection('profits')
+      .findOneAndUpdate({_id: ObjectId(req.body.docId)}, {
         $set: {
           thumbUp:req.body.thumbUp + 1
         }

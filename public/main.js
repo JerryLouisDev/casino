@@ -33,19 +33,24 @@ var betAmount = document.querySelector('h2');
 document.querySelector('#submitBet').addEventListener('click', spinWheel);
 
   function spinWheel() {
-    const casinoWon = "casino won!"
-    const playerWon = "player won!"
 
-    console.log("works?");
+    winnerComparison(playerChoice)
+    let amount = Number(betAmount.innerText)
+
     fetch('profile', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        'casinoWon': casinoWon,
-        'playerWon': playerWon
+        'winner': winner,
+        'loser' : loser,
+        'total' : 0,
+        'betAmount': amount
 
       })
     })
+
+    // fetchPutRequest(amount)
+
     .then(response => {
       if (response.ok) return response.json()
         // Add some stylying to notify the client that item has been selected
@@ -55,21 +60,32 @@ document.querySelector('#submitBet').addEventListener('click', spinWheel);
     betAmount.innerText
 
     console.log(betAmount.innerText);
+      
+    }
 
-    // fetch(`/api?betAmount=${bet}`)
-    //   //the ? is the parimeter for the bet being place
-    //   .then(response => response.json())
-    //   .then(data =>{
-    //
-    //
-    //     //this is the data for the winner and results will be returned with console.log below
-    //     console.log(data.winner);
-    //     console.log(data.spinResults);
-    //
+    // function fetchPutRequest(amount) {
+
+    //   let docId = document.querySelector('ul').lastChild.getAttribute(data-docId)
+
+    //   console.log(docId)
+      
+    //   fetch('profile', {
+    //     method: 'put',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({
+ 
+    //       'total' : amount,
+    //       'docId' : docId
+  
+    //     })
     //   })
 
-      winnerComparison(playerChoice)
-    }
+    //   .then(response => {
+    //     if (response.ok) return response.json()
+    //       // Add some stylying to notify the client that item has been selected
+    //       // window.location.reload()
+    //   })
+    // }
 
 //Event listeners are added on each square on the table and the player's choice is recorded (thanks to the 'getPlayerChoice' function)
 
@@ -145,6 +161,9 @@ let playerChoice
 
   }
 
+  let winner
+  let loser
+
 //This function checks who has won.
 
   function winnerComparison(playerChoice){
@@ -156,15 +175,17 @@ let playerChoice
       //let playerBank = bet * 10  -->pseudo code to add winnings to player's bank that they'll be able to "witdraw"
       //total = total - playerBank -->pseudo that subracts the winnings from the casino total
       console.log("player wins");//don't know what will happen when wins occur just yet
-      let result = "player wins"
-      let winner = "player"
+      let result = "You win!"
+      winner = "player"
+      loser = "casino"
       printResults(result)
       updatePlayerTotal(winner)
 
     }else{
       console.log("casino wins");//don't know what will happen when wins occur just yet
-      let result = "casino wins"
-      let winner = "casino"
+      let result = "You lost! casino wins"
+      winner = "casino"
+      loser = "player"
       printResults(result)
       updatePlayerTotal(winner)
     }
