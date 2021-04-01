@@ -31,7 +31,6 @@ module.exports = function(app, passport, db) {
       db.collection('profits').save(
         {winner: req.body.winner, 
         loser: req.body.loser, 
-        total: req.body.total, 
         betAmount: req.body.betAmount}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
@@ -41,20 +40,20 @@ module.exports = function(app, passport, db) {
 
     var ObjectId = require('mongodb').ObjectId; 
 
-    app.put('/profile', (req, res) => { 
-      db.collection('profits')
-      .findOneAndUpdate({_id: ObjectId(req.body.docId)}, {
-        $set: {
-          thumbUp:req.body.thumbUp + 1
-        }
-      }, {
-        sort: {_id: -1},
-        upsert: true
-      }, (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      })
-    })
+    // app.put('/profile', (req, res) => { 
+    //   db.collection('profits')
+    //   .findOneAndUpdate({_id: ObjectId(req.body.docId)}, {
+    //     $set: {
+    //       thumbUp:req.body.thumbUp + 1
+    //     }
+    //   }, {
+    //     sort: {_id: -1},
+    //     upsert: true
+    //   }, (err, result) => {
+    //     if (err) return res.send(err)
+    //     res.send(result)
+    //   })
+    // })
     app.put('/thumbDown', (req, res) => { // add to our thumbs up
       db.collection('messages') //refers to the mongodb that holds user information
       .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {

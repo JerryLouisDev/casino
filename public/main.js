@@ -41,15 +41,14 @@ document.querySelector('#submitBet').addEventListener('click', spinWheel);
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
+
         'winner': winner,
         'loser' : loser,
-        'total' : 0,
         'betAmount': amount
 
       })
     })
 
-    // fetchPutRequest(amount)
 
     .then(response => {
       if (response.ok) return response.json()
