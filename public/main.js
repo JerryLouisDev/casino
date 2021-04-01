@@ -174,16 +174,19 @@ let playerChoice
   }
 
 
-  function updatePlayerTotal(winner){
+  function updatePlayerTotal(winner) {
     let playerTotal = Number(document.querySelector('.h3PlayerTotal').innerText)
+    let betAmount = Number(document.querySelector('.h2BetAmount').innerText)
 
-    console.log(playerTotal)
-    console.log(Number(document.querySelector('.h2BetAmount').innerText))
+    if(winner === "player") {
+      let updatedTotal = playerTotal + betAmount
+      
+      return document.querySelector('.h3PlayerTotal').innerText = updatedTotal
+      
+    } else if (winner === "casino") {
+      let updatedTotal = playerTotal - betAmount
 
-    if(winner = "player") {
-      playerTotal.innerText += Number(document.querySelector('.h2BetAmount').innerText)
-    } else {
-      playerTotal.innerText -= Number(document.querySelector('.h2BetAmount').innerText)
+      return document.querySelector('.h3PlayerTotal').innerText = updatedTotal
     }
   }
 
