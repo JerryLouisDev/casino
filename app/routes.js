@@ -9,11 +9,26 @@ module.exports = function(app, passport, db) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('profits').find().toArray((err, result) => {
-          if (err) return console.log(err)
-          res.render('profile.ejs', {
-            user : req.user,
-            profits: result
+        db.collection('profits').find().toArray((err, resultMain) => {
+          db.collection('profits').aggregate(
+            [
+              {$match: {// match acts as a filter to find all of the documents with the conditions below
+                winner: 'casino',//these are said conditions, in this case we are filtering all docs where winner is the casino
+                }
+              },
+              {$group: {_id: null,// group puts all of the returned matches in one group
+                        total: { $sum: '$betAmount'}}// this code sets the total property to the sum of all of the bet amounts in the group
+              }
+            ]).toArray().then((result) => {
+              console.log(result)
+              if (err) return console.log(err)
+              let total = result[0].total
+              console.log(total);
+              res.render("profile.ejs", {
+                resultMain: profits,
+                profit: total,
+                user: req.user
+          })
           })
         })
     });
@@ -29,18 +44,29 @@ module.exports = function(app, passport, db) {
     app.post('/profile', (req, res) => {
       console.log(req.body);
       db.collection('profits').save(
-        {winner: req.body.winner, 
-        loser: req.body.loser, 
-        betAmount: req.body.betAmount}, (err, result) => {
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/')
+        {winner: req.body.winner,
+        betAmount: req.body.betAmount, profit: req.body.profit}, (err, result) => {
+             if (err) return console.log(err)
+            console.log('saved to database')
       })
-    })
+      })
+    //   db.collection('profits').aggregate(
+    //     [
+    //       {$match: {// match acts as a filter to find all of the documents with the conditions below
+    //         winner: 'casino',//these are said conditions, in this case we are filtering all docs where winner is the casino
+    //         }
+    //       },
+    //       {$group: {_id: null,// group puts all of the returned matches in one group
+    //                 total: { $sum: '$betAmount'}}// this code sets the total property to the sum of all of the bet amounts in the group
+    //       }
+    //     ]).toArray().then((result) => {
+    //       console.log(result)
+    //   }
+    //
 
-    var ObjectId = require('mongodb').ObjectId; 
+    var ObjectId = require('mongodb').ObjectId;
 
-    // app.put('/profile', (req, res) => { 
+    // app.put('/profile', (req, res) => {
     //   db.collection('profits')
     //   .findOneAndUpdate({_id: ObjectId(req.body.docId)}, {
     //     $set: {

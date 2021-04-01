@@ -43,8 +43,8 @@ document.querySelector('#submitBet').addEventListener('click', spinWheel);
       body: JSON.stringify({
 
         'winner': winner,
-        'loser' : loser,
-        'betAmount': amount
+        'betAmount': amount,
+        'profit': 0
 
       })
     })
@@ -55,11 +55,11 @@ document.querySelector('#submitBet').addEventListener('click', spinWheel);
         // Add some stylying to notify the client that item has been selected
         // window.location.reload()
     })
-    
+
     betAmount.innerText
 
     console.log(betAmount.innerText);
-      
+
     }
 
     // function fetchPutRequest(amount) {
@@ -67,15 +67,15 @@ document.querySelector('#submitBet').addEventListener('click', spinWheel);
     //   let docId = document.querySelector('ul').lastChild.getAttribute(data-docId)
 
     //   console.log(docId)
-      
+
     //   fetch('profile', {
     //     method: 'put',
     //     headers: {'Content-Type': 'application/json'},
     //     body: JSON.stringify({
- 
+
     //       'total' : amount,
     //       'docId' : docId
-  
+
     //     })
     //   })
 
@@ -200,9 +200,9 @@ let playerChoice
 
     if(winner === "player") {
       let updatedTotal = playerTotal + betAmount
-      
+
       return document.querySelector('.h3PlayerTotal').innerText = updatedTotal
-      
+
     } else if (winner === "casino") {
       let updatedTotal = playerTotal - betAmount
 
