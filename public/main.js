@@ -37,14 +37,16 @@ document.querySelector('#submitBet').addEventListener('click', spinWheel);
     winnerComparison(playerChoice)
     let amount = Number(betAmount.innerText)
 
+//SEND THE RESULT TO THE DATABASE
+
     fetch('profile', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
 
         'winner': winner,
-        'loser' : loser,
-        'betAmount': amount
+        'betAmount': amount,
+        'profit': 0
 
       })
     })
@@ -55,36 +57,12 @@ document.querySelector('#submitBet').addEventListener('click', spinWheel);
         // Add some stylying to notify the client that item has been selected
         // window.location.reload()
     })
-    
+
     betAmount.innerText
 
     console.log(betAmount.innerText);
-      
+
     }
-
-    // function fetchPutRequest(amount) {
-
-    //   let docId = document.querySelector('ul').lastChild.getAttribute(data-docId)
-
-    //   console.log(docId)
-      
-    //   fetch('profile', {
-    //     method: 'put',
-    //     headers: {'Content-Type': 'application/json'},
-    //     body: JSON.stringify({
- 
-    //       'total' : amount,
-    //       'docId' : docId
-  
-    //     })
-    //   })
-
-    //   .then(response => {
-    //     if (response.ok) return response.json()
-    //       // Add some stylying to notify the client that item has been selected
-    //       // window.location.reload()
-    //   })
-    // }
 
 //Event listeners are added on each square on the table and the player's choice is recorded (thanks to the 'getPlayerChoice' function)
 
@@ -200,9 +178,9 @@ let playerChoice
 
     if(winner === "player") {
       let updatedTotal = playerTotal + betAmount
-      
+
       return document.querySelector('.h3PlayerTotal').innerText = updatedTotal
-      
+
     } else if (winner === "casino") {
       let updatedTotal = playerTotal - betAmount
 
