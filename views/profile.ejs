@@ -63,13 +63,21 @@
 
   </div>
 
-  <section class ="secResults">
+  <section class ="secResultsProfits">
     <h2>NET PROFITS</h2>
       <span class ="spanNetProfit"><%= addProfits[0].total %></span>
     <h2>PROFITS</h2>
       <span class ="spanNetProfit"><%= addProfits[0].total - subtractProfits %></span>
     <h2>LOSSES</h2>
       <span class ="spanProfit"><%= Math.abs(subtractProfits) %></span>
+    
+  </section>
+
+  <section class ="secResultsPlayerStats">
+    <h2>Player Wins</h2>
+      <span class ="spanPlayerWins"><%= winnerCasino %></span>
+    <h2>House Wins</h2>
+      <span class ="spanHouseWins"><%= playerCasino %></span>
     
   </section>
 
